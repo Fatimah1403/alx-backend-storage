@@ -6,10 +6,10 @@
 -- never null (= default will be the first element of the enumeration, here US)
 
 CREATE TABLE IF NOT EXISTS users (
-    id int NOT NULL AUTO_INCREMENT,
-    email VARCHAR(255) not null unique,
-    name VARCHAR(255),
-    PRIMARY KEY (id);
-    country ENUM('US', 'CO', 'TN') DEFAULT 'US' NOT NULL 
+    id int not null AUTO_INCREMENT,
+    email varchar(255) not null unique,
+    name varchar(255),
+    primary key (id);
+    country enum('US', 'CO', 'TN') DEFAULT 'US' NOT NULL 
     
 );
