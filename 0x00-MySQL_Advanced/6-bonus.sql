@@ -5,7 +5,8 @@
 -- project_name, a new or already exists projects - if no projects.name found in the table, you should create it
 -- score, the score value for the correction
 
-DROP procedure IF EXISTS AddBonus;
+DELIMITER $$
+DROP PROCEDURE IF EXISTS AddBonus;
 CREATE PROCEDURE AddBonus(
 	IN `user_id` INTEGER,
 	IN `project_name` VARCHAR(255),
@@ -14,8 +15,10 @@ CREATE PROCEDURE AddBonus(
 BEGIN
     INSERT INTO projects (name)
     SELECT project_name
+    -- WHERE NOT EXISTS (SELECT * FROM projects WHERE name=project_name LIMIT 1);
     WHERE project_name NOT IN (SELECT name FROM projects);
+
     INSERT INTO corrections (user_id, project_id, score)
     VALUES(user_id, (SELECT id from projects WHERE name=project_name), score);
 END $$
-DELIMETER ;$$
+DELIMITER ;$$
