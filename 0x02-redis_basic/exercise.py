@@ -40,23 +40,16 @@ class Cache:
     def get(self, key: str,
             fn: Optional[Callable] = None) -> UnionOfTypes:
         """
-        Retrieve data from Redis and convert it to a desirable format
+        Retrieves data stored in redis using a key
+        converts the result/value back to the desired format
         """
-        data = self._redis.get(key)
+        value = self._redis.get(key)
+        return fn(value) if fn else value
 
-        return fn(data) if fn else data
+    def get_str(self, value: str) -> str:
+        """ get a string """
+        return self.get(self._key, str)
 
-    def get_str(self, key: str) -> str:
-        """
-        automatically parametrize Cache.get with the correct
-        conversion function
-        """
-        data = self._redis.get(key)
-        return data.decode("utf-8")
-
-    def get_int(self, key: str) -> int:
-        """
-        automatically parametrize Cache.get with the correct
-        conversion function
-        """
-        return self.get(key, lambda x: int(x))
+    def get_int(self, value: str) -> int:
+        """ get an int """
+        return self.get(self._key, int)
