@@ -27,7 +27,7 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
-    def store(self, data: Union[str,bytes, int, float]) -> str:
+    def store(self, data: Union[str, bytes, int, float]) -> str:
         """
         store a value in redis
         """
@@ -36,3 +36,29 @@ class Cache:
         self._redis.set(key, data)
 
         return key
+
+    def get(self, key: str,
+            fn: Optional[Callable] = None) -> UnionOfTypes:
+        """
+        Retrieve data from Redis and convert it to a desirable format
+        """
+        data = self._redis.get(key)
+
+        if data is None and fn is None:
+            data = fn(data)
+        return data
+
+    def get_str(self, key: str) -> str:
+        """
+        automatically parametrize Cache.get with the correct
+        conversion function
+        """
+        data = self.redis.get(key)
+        return data.decode("utf-8")
+
+    def get_int(self, key: str) -> int:
+        """
+        automatically parametrize Cache.get with the correct
+        conversion function
+        """
+        return self.get(key, lambda x: int(x))
