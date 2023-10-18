@@ -15,6 +15,8 @@ import redis
 import uuid
 from typing import Union, Callable, Optional
 
+UnionOfTypes = Union[str, bytes, int, float]
+
 
 class Cache:
     """Type-annotate store correctly. Remember
