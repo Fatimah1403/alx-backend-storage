@@ -44,16 +44,14 @@ class Cache:
         """
         data = self._redis.get(key)
 
-        if data is None and fn is None:
-            data = fn(data)
-        return data
+        return fn(data) if fn else data
 
     def get_str(self, key: str) -> str:
         """
         automatically parametrize Cache.get with the correct
         conversion function
         """
-        data = self.redis.get(key)
+        data = self._redis.get(key)
         return data.decode("utf-8")
 
     def get_int(self, key: str) -> int:
